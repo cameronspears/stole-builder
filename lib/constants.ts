@@ -73,26 +73,26 @@ export const PRICING = {
 
 export const HOST_MESSAGES: Record<HostStep, string> = {
   welcome:
-    "Welcome! I'm here to help you design your perfect graduation stole. Let's start with the length!",
+    "Welcome! Click on the glowing ruler above to pick your stole length.",
   length:
-    'How long would you like your stole? 62" is standard, 72" gives extra drape.',
+    "Click the ruler to choose 62\" (standard) or 72\" (extra drape).",
   stoleColor:
-    "Beautiful! Now pick your stole color—squeeze the paint tube to see your options!",
+    "Great! Now click the paint tube on the shelf to pick your stole color.",
   textileColor:
-    "Time for the textile panel! Grab a crayon to pick a color.",
+    "Time for the textile! Click the crayon box to choose a color.",
   accentMetal:
-    "Gold or silver? This sets the tone for your trim and beads.",
+    "Click the thread spool to pick gold or silver accents and trim style.",
   trimStyle: "Pick a trim style that speaks to you!",
   beads:
-    "Would you like beading? It adds a lovely sparkle and movement!",
+    "Click the bead jar to add some sparkle to your stole!",
   orientation:
-    "How should the textile sit—straight across or at an angle?",
+    "Use the compass to set your textile angle—straight or angled?",
   embroidery:
-    "Almost done! Tell me what you'd like embroidered—your name, graduation year, a special message?",
+    "Almost done! Click the embroidery hoop to add your custom text.",
   complete:
-    "Your stole design is ready! Review everything in the receipt, then save or share your creation!",
+    "Beautiful! Your design is ready. Check the receipt and save when ready!",
   changed:
-    "Nice choice! Feel free to keep customizing or move on when you're ready.",
+    "Nice choice! Keep customizing or click another tool on the pegboard.",
 };
 
 export const DEFAULT_CONFIG: StoleConfig = {

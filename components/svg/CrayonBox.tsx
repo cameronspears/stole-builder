@@ -5,10 +5,11 @@ import { motion } from "framer-motion";
 interface CrayonBoxProps {
   className?: string;
   isOpen?: boolean;
+  isActive?: boolean;
   onClick?: () => void;
 }
 
-export function CrayonBox({ className, isOpen, onClick }: CrayonBoxProps) {
+export function CrayonBox({ className, isOpen, isActive, onClick }: CrayonBoxProps) {
   return (
     <motion.svg
       viewBox="0 0 80 60"
@@ -19,6 +20,27 @@ export function CrayonBox({ className, isOpen, onClick }: CrayonBoxProps) {
       style={{ cursor: "pointer" }}
       aria-label="Crayon box - click to select textile color"
     >
+      {/* Glow effect when active */}
+      {isActive && (
+        <motion.ellipse
+          cx="40"
+          cy="35"
+          rx="50"
+          ry="40"
+          fill="url(#crayonBoxGlow)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+      )}
+      
+      <defs>
+        <radialGradient id="crayonBoxGlow">
+          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      
       {/* Box back */}
       <rect x="5" y="10" width="70" height="45" rx="3" fill="#FFD93D" stroke="#E6C235" strokeWidth="2" />
       

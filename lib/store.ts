@@ -2,7 +2,8 @@
 
 import { create } from "zustand";
 import { DEFAULT_CONFIG, HOST_MESSAGES } from "./constants";
-import type { StoleConfig, HostStep } from "./types";
+import type { StoleConfig, HostStep, ToolId } from "./types";
+import { TOOL_ORDER } from "./types";
 
 interface StoleStore {
   // Current config
@@ -16,12 +17,18 @@ interface StoleStore {
   currentStep: HostStep;
   hostMessage: string;
 
+  // Pegboard tool state
+  activeTool: ToolId | null;
+  suggestedTool: ToolId;
+
   // Actions
   updateConfig: (partial: Partial<StoleConfig>) => void;
   undo: () => void;
   redo: () => void;
   reset: () => void;
   setStep: (step: HostStep) => void;
+  setActiveTool: (tool: ToolId | null) => void;
+  advanceSuggestedTool: () => void;
 
   // Computed helpers
   canUndo: () => boolean;
@@ -34,6 +41,8 @@ export const useStoleStore = create<StoleStore>((set, get) => ({
   future: [],
   currentStep: "welcome",
   hostMessage: HOST_MESSAGES.welcome,
+  activeTool: null,
+  suggestedTool: TOOL_ORDER[0],
 
   updateConfig: (partial) => {
     const { config, past } = get();
@@ -76,6 +85,8 @@ export const useStoleStore = create<StoleStore>((set, get) => ({
       config: DEFAULT_CONFIG,
       currentStep: "welcome",
       hostMessage: HOST_MESSAGES.welcome,
+      activeTool: null,
+      suggestedTool: TOOL_ORDER[0],
     });
   },
 
@@ -84,6 +95,17 @@ export const useStoleStore = create<StoleStore>((set, get) => ({
       currentStep: step,
       hostMessage: HOST_MESSAGES[step],
     });
+  },
+
+  setActiveTool: (tool) => {
+    set({ activeTool: tool });
+  },
+
+  advanceSuggestedTool: () => {
+    const { suggestedTool } = get();
+    const currentIndex = TOOL_ORDER.indexOf(suggestedTool);
+    const nextIndex = Math.min(currentIndex + 1, TOOL_ORDER.length - 1);
+    set({ suggestedTool: TOOL_ORDER[nextIndex] });
   },
 
   canUndo: () => get().past.length > 0,

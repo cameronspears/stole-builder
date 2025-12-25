@@ -100,3 +100,32 @@ export type HostStep =
   | "embroidery"
   | "complete"
   | "changed";
+
+export type ToolId =
+  | "length"
+  | "stoleColor"
+  | "textileColor"
+  | "accent"
+  | "beads"
+  | "orientation"
+  | "embroidery";
+
+export const TOOL_ORDER: ToolId[] = [
+  "length",
+  "stoleColor",
+  "textileColor",
+  "accent",
+  "beads",
+  "orientation",
+  "embroidery",
+];
+
+export const TOOL_TITLES: Record<ToolId, string> = {
+  length: "Stole Length",
+  stoleColor: "Stole Color",
+  textileColor: "Textile Color",
+  accent: "Accent & Trim",
+  beads: "Beading",
+  orientation: "Textile Style",
+  embroidery: "Embroidery",
+};

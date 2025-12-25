@@ -6,16 +6,41 @@ interface RulerProps {
   className?: string;
   selectedLength?: 62 | 72;
   onSelect?: (length: 62 | 72) => void;
+  isActive?: boolean;
+  onClick?: () => void;
 }
 
-export function Ruler({ className, selectedLength = 62, onSelect }: RulerProps) {
+export function Ruler({ className, selectedLength = 62, onSelect, isActive, onClick }: RulerProps) {
   return (
     <motion.svg
       viewBox="0 0 100 50"
       className={className}
       whileHover={{ scale: 1.02 }}
+      onClick={onClick}
+      style={{ cursor: onClick ? "pointer" : "default" }}
       aria-label="Length selector"
     >
+      {/* Glow effect when active */}
+      {isActive && (
+        <motion.ellipse
+          cx="50"
+          cy="25"
+          rx="55"
+          ry="30"
+          fill="url(#rulerGlow)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+      )}
+      
+      <defs>
+        <radialGradient id="rulerGlow">
+          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      
       {/* Ruler body */}
       <rect
         x="5"

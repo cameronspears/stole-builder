@@ -7,23 +7,17 @@ import { Receipt } from "./Receipt";
 import { Host } from "./Host";
 import { Toolbar } from "./Toolbar";
 import { ExportModal } from "./ExportModal";
-import { LengthTool } from "@/components/tools/LengthTool";
-import { StoleColorTool } from "@/components/tools/StoleColorTool";
-import { TextileColorTool } from "@/components/tools/TextileColorTool";
-import { AccentTool } from "@/components/tools/AccentTool";
-import { BeadsTool } from "@/components/tools/BeadsTool";
-import { OrientationTool } from "@/components/tools/OrientationTool";
-import { EmbroideryForm } from "@/components/tools/EmbroideryForm";
+import { Pegboard } from "./Pegboard";
 import Link from "next/link";
 
 export function BuilderScreen() {
   const [showExportModal, setShowExportModal] = useState(false);
 
   return (
-    <div className="min-h-screen pegboard-bg">
+    <div className="min-h-screen pegboard-bg relative overflow-hidden">
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-pegboard-dark/90 backdrop-blur-sm border-b border-pegboard-light">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <header className="sticky top-0 z-30 bg-pegboard-dark/90 backdrop-blur-sm border-b border-pegboard-light">
+        <div className="max-w-full px-4 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <motion.span
               whileHover={{ scale: 1.05 }}
@@ -36,63 +30,50 @@ export function BuilderScreen() {
         </div>
       </header>
 
-      {/* Main content */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-12 gap-6">
-          {/* Left rail - Tools */}
-          <aside className="col-span-12 lg:col-span-3 space-y-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="sticky top-20"
-            >
-              <h2 className="font-display text-lg font-bold text-craft-cream mb-4 flex items-center gap-2">
-                <span className="text-2xl">🛠</span> Tools
-              </h2>
-              <div className="space-y-3 max-h-[calc(100vh-160px)] overflow-y-auto pr-2 pb-4">
-                <LengthTool />
-                <StoleColorTool />
-                <TextileColorTool />
-                <AccentTool />
-                <BeadsTool />
-                <OrientationTool />
-                <EmbroideryForm />
-              </div>
-            </motion.div>
-          </aside>
+      {/* Main pegboard canvas - full viewport */}
+      <main className="relative h-[calc(100vh-60px)]">
+        {/* Pegboard tools on the left */}
+        <Pegboard />
 
-          {/* Center - Stole Preview */}
-          <div className="col-span-12 lg:col-span-5">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="sticky top-20"
-            >
-              {/* Host - top right of preview area */}
-              <div className="flex justify-end mb-4">
-                <Host />
-              </div>
-              
-              {/* Stole preview area */}
-              <div className="bg-pegboard-light/30 rounded-2xl p-6 min-h-[500px] flex items-start justify-center">
-                <StolePreview />
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right rail - Receipt */}
-          <aside className="col-span-12 lg:col-span-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="sticky top-20"
-            >
-              <Receipt onExport={() => setShowExportModal(true)} />
-            </motion.div>
-          </aside>
+        {/* Center - Stole Preview */}
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex flex-col items-center"
+          >
+            {/* Stole preview area */}
+            <div className="bg-pegboard-light/20 rounded-2xl p-6 min-h-[450px] flex items-start justify-center backdrop-blur-sm">
+              <StolePreview />
+            </div>
+          </motion.div>
         </div>
+
+        {/* Right side - Receipt (pinned card) */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="absolute right-4 top-24"
+          style={{ transform: 'rotate(1deg)' }}
+        >
+          {/* Pin */}
+          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-red-500 shadow-md z-10 flex items-center justify-center">
+            <div className="w-2 h-2 rounded-full bg-red-700" />
+          </div>
+          <Receipt onExport={() => setShowExportModal(true)} />
+        </motion.div>
+
+        {/* Host - bottom left, near the tools */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="absolute left-4 bottom-4"
+        >
+          <Host />
+        </motion.div>
       </main>
 
       {/* Export Modal */}

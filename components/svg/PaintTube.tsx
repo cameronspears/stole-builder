@@ -5,10 +5,11 @@ import { motion } from "framer-motion";
 interface PaintTubeProps {
   className?: string;
   isOpen?: boolean;
+  isActive?: boolean;
   onClick?: () => void;
 }
 
-export function PaintTube({ className, isOpen, onClick }: PaintTubeProps) {
+export function PaintTube({ className, isOpen, isActive, onClick }: PaintTubeProps) {
   return (
     <motion.svg
       viewBox="0 0 60 100"
@@ -19,6 +20,20 @@ export function PaintTube({ className, isOpen, onClick }: PaintTubeProps) {
       style={{ cursor: "pointer" }}
       aria-label="Paint tube - click to select stole color"
     >
+      {/* Glow effect when active */}
+      {isActive && (
+        <motion.ellipse
+          cx="30"
+          cy="50"
+          rx="35"
+          ry="55"
+          fill="url(#paintTubeGlow)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        />
+      )}
+      
       {/* Tube cap */}
       <rect x="20" y="5" width="20" height="15" rx="3" fill="#333" />
       <rect x="23" y="0" width="14" height="8" rx="2" fill="#444" />
@@ -82,6 +97,10 @@ export function PaintTube({ className, isOpen, onClick }: PaintTubeProps) {
           <stop offset="50%" stopColor="#F5F5F5" />
           <stop offset="100%" stopColor="#D8D8D8" />
         </linearGradient>
+        <radialGradient id="paintTubeGlow">
+          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
+        </radialGradient>
       </defs>
     </motion.svg>
   );

@@ -154,3 +154,45 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #5a4a3a;
 }
+
+/* Tool glow animation for suggested tools */
+@keyframes tool-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.7));
+  }
+}
+
+.tool-glow {
+  animation: tool-glow 1.5s ease-in-out infinite;
+}
+
+/* Pegboard item hover effects */
+.pegboard-item {
+  @apply transition-all duration-200 cursor-pointer;
+}
+
+.pegboard-item:hover {
+  @apply scale-105;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Drawer overlay */
+.drawer-overlay {
+  @apply fixed inset-0 bg-black/20 backdrop-blur-sm z-40;
+}
+
+/* Pinned receipt card */
+.pinned-receipt {
+  @apply relative bg-craft-cream rounded-lg shadow-pinned;
+  transform: rotate(1deg);
+}
+
+.pinned-receipt::before {
+  content: '';
+  @apply absolute -top-3 left-1/2 w-6 h-6 rounded-full bg-red-500;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
