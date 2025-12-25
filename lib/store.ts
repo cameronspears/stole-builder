@@ -1,0 +1,91 @@
+"use client";
+
+import { create } from "zustand";
+import { DEFAULT_CONFIG, HOST_MESSAGES } from "./constants";
+import type { StoleConfig, HostStep } from "./types";
+
+interface StoleStore {
+  // Current config
+  config: StoleConfig;
+
+  // History for undo/redo
+  past: StoleConfig[];
+  future: StoleConfig[];
+
+  // Host guidance
+  currentStep: HostStep;
+  hostMessage: string;
+
+  // Actions
+  updateConfig: (partial: Partial<StoleConfig>) => void;
+  undo: () => void;
+  redo: () => void;
+  reset: () => void;
+  setStep: (step: HostStep) => void;
+
+  // Computed helpers
+  canUndo: () => boolean;
+  canRedo: () => boolean;
+}
+
+export const useStoleStore = create<StoleStore>((set, get) => ({
+  config: DEFAULT_CONFIG,
+  past: [],
+  future: [],
+  currentStep: "welcome",
+  hostMessage: HOST_MESSAGES.welcome,
+
+  updateConfig: (partial) => {
+    const { config, past } = get();
+    set({
+      past: [...past, config],
+      future: [],
+      config: { ...config, ...partial },
+    });
+  },
+
+  undo: () => {
+    const { past, config, future } = get();
+    if (past.length === 0) return;
+    const previous = past[past.length - 1];
+    set({
+      past: past.slice(0, -1),
+      config: previous,
+      future: [config, ...future],
+    });
+  },
+
+  redo: () => {
+    const { past, config, future } = get();
+    if (future.length === 0) return;
+    const next = future[0];
+    set({
+      past: [...past, config],
+      config: next,
+      future: future.slice(1),
+    });
+  },
+
+  reset: () => {
+    const { config, past } = get();
+    // Only add to history if config is different from default
+    const isDifferent = JSON.stringify(config) !== JSON.stringify(DEFAULT_CONFIG);
+    set({
+      past: isDifferent ? [...past, config] : past,
+      future: [],
+      config: DEFAULT_CONFIG,
+      currentStep: "welcome",
+      hostMessage: HOST_MESSAGES.welcome,
+    });
+  },
+
+  setStep: (step) => {
+    set({
+      currentStep: step,
+      hostMessage: HOST_MESSAGES[step],
+    });
+  },
+
+  canUndo: () => get().past.length > 0,
+  canRedo: () => get().future.length > 0,
+}));

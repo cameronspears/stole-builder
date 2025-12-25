@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --pegboard-color: #8B7355;
+  --pegboard-light: #A08B70;
+  --pegboard-dark: #6B5A45;
+  --craft-cream: #FDF6E3;
+  --craft-paper: #F5E6D3;
+  --craft-wood: #DEB887;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-quicksand), system-ui, sans-serif;
+  background-color: var(--pegboard-color);
+  min-height: 100vh;
+}
+
+/* Pegboard texture background */
+.pegboard-bg {
+  background-color: var(--pegboard-color);
+  background-image: 
+    radial-gradient(circle, var(--pegboard-dark) 4px, transparent 4px);
+  background-size: 32px 32px;
+  background-position: 16px 16px;
+}
+
+/* Pinned card effect */
+.pinned-card {
+  @apply relative bg-craft-cream rounded-lg shadow-pinned;
+  transform: rotate(-1deg);
+}
+
+.pinned-card::before {
+  content: '';
+  @apply absolute -top-2 left-1/2 w-4 h-4 rounded-full bg-craft-pin;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Tool item styling */
+.tool-item {
+  @apply relative p-3 rounded-lg cursor-pointer transition-all duration-200;
+  @apply hover:scale-105 hover:shadow-tool;
+}
+
+/* Receipt paper effect */
+.receipt-paper {
+  background: linear-gradient(
+    to bottom,
+    var(--craft-cream) 0%,
+    var(--craft-cream) 98%,
+    #ddd 98%,
+    #ddd 100%
+  );
+  background-size: 100% 24px;
+}
+
+/* Wooden texture for hanger */
+.wood-texture {
+  background: linear-gradient(
+    135deg,
+    var(--craft-wood) 0%,
+    #C4A574 25%,
+    var(--craft-wood) 50%,
+    #C4A574 75%,
+    var(--craft-wood) 100%
+  );
+}
+
+/* Speech bubble */
+.speech-bubble {
+  @apply relative bg-white rounded-2xl p-4 shadow-lg;
+}
+
+.speech-bubble::after {
+  content: '';
+  @apply absolute -bottom-3 left-8 w-0 h-0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid white;
+}
+
+/* Toggle switch styles */
+.toggle-switch {
+  @apply relative w-14 h-7 rounded-full cursor-pointer transition-colors duration-300;
+}
+
+.toggle-switch-knob {
+  @apply absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform duration-300;
+}
+
+.toggle-switch-knob.active {
+  transform: translateX(28px);
+}
+
+/* Paint splotch */
+.paint-splotch {
+  @apply w-10 h-10 rounded-full cursor-pointer transition-all duration-200;
+  @apply hover:scale-110 hover:shadow-lg;
+  border: 3px solid transparent;
+}
+
+.paint-splotch.selected {
+  border-color: #333;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #333;
+}
+
+/* Crayon styling */
+.crayon {
+  @apply w-6 h-16 rounded-t cursor-pointer transition-all duration-200;
+  @apply hover:scale-110 hover:-translate-y-1;
+  border-radius: 4px 4px 2px 2px;
+}
+
+.crayon.selected {
+  transform: translateY(-8px) scale(1.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Button styles */
+.btn-primary {
+  @apply px-6 py-3 rounded-lg font-display font-bold text-lg;
+  @apply bg-amber-500 text-white shadow-pinned;
+  @apply hover:bg-amber-600 hover:scale-105 transition-all duration-200;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 rounded-lg font-body font-medium;
+  @apply bg-craft-cream text-pegboard-dark border-2 border-pegboard;
+  @apply hover:bg-white hover:scale-105 transition-all duration-200;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--pegboard-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pegboard-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a4a3a;
+}
