@@ -17,7 +17,7 @@ export function EmbroideryFormItem({ onClick, isActive }: EmbroideryFormItemProp
   return (
     <div className="flex flex-col items-center">
       <EmbroideryHoop
-        className="w-18 h-20"
+        className="w-20 h-20"
         hasText={!!config.embroideryText}
         isActive={isActive}
         onClick={onClick}
@@ -27,11 +27,15 @@ export function EmbroideryFormItem({ onClick, isActive }: EmbroideryFormItemProp
 }
 
 export function EmbroideryFormDrawerContent() {
-  const { config, updateConfig, setStep } = useStoleStore();
+  const { config, updateConfig, completeStep, setActiveTool } = useStoleStore();
 
   const handleChange = (field: string, value: string) => {
     updateConfig({ [field]: value });
-    setStep("changed");
+  };
+
+  const handleComplete = () => {
+    completeStep("embroidery");
+    setActiveTool(null);
   };
 
   return (
@@ -112,6 +116,15 @@ export function EmbroideryFormDrawerContent() {
           rows={3}
           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none resize-none"
         />
+      </div>
+
+      <div className="flex gap-2 pt-2 border-t border-pegboard-light">
+        <button
+          onClick={handleComplete}
+          className="flex-1 px-3 py-2 rounded-lg bg-amber-500 text-white text-sm font-medium hover:bg-amber-600 transition-all"
+        >
+          Save & Finish
+        </button>
       </div>
     </div>
   );

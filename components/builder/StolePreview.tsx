@@ -7,7 +7,7 @@ import { TextilePanel } from "@/components/svg/TextilePanel";
 import { Trim } from "@/components/svg/Trim";
 import { Beads } from "@/components/svg/Beads";
 import { useStoleStore } from "@/lib/store";
-import { getStoleColorHex, getTextileColorHex } from "@/lib/constants";
+import { getFontFamily, getStoleColorHex, getTextileColorHex } from "@/lib/constants";
 
 interface StolePreviewProps {
   className?: string;
@@ -18,6 +18,7 @@ export function StolePreview({ className }: StolePreviewProps) {
 
   const stoleColorHex = getStoleColorHex(config.stoleColor);
   const textileColorHex = getTextileColorHex(config.textileColor);
+  const fontFamily = getFontFamily(config.fontPreference);
 
   return (
     <div className={`relative flex flex-col items-center ${className}`}>
@@ -82,7 +83,7 @@ export function StolePreview({ className }: StolePreviewProps) {
             <div className="flex gap-8">
               {/* Left panel text */}
               <div
-                className="text-center text-[8px] font-medium max-w-[30px] break-words"
+                className="text-center text-[10px] font-medium max-w-[36px] break-words"
                 style={{
                   color: stoleColorHex === "#FFFFFF" || stoleColorHex === "#FFFFF0" 
                     ? "#333" 
@@ -90,13 +91,14 @@ export function StolePreview({ className }: StolePreviewProps) {
                   textShadow: "0 1px 2px rgba(0,0,0,0.3)",
                   writingMode: "vertical-rl",
                   textOrientation: "mixed",
+                  fontFamily,
                 }}
               >
                 {config.embroideryText}
               </div>
               {/* Right panel text */}
               <div
-                className="text-center text-[8px] font-medium max-w-[30px] break-words"
+                className="text-center text-[10px] font-medium max-w-[36px] break-words"
                 style={{
                   color: stoleColorHex === "#FFFFFF" || stoleColorHex === "#FFFFF0" 
                     ? "#333" 
@@ -104,6 +106,7 @@ export function StolePreview({ className }: StolePreviewProps) {
                   textShadow: "0 1px 2px rgba(0,0,0,0.3)",
                   writingMode: "vertical-rl",
                   textOrientation: "mixed",
+                  fontFamily,
                 }}
               >
                 {config.embroideryText}

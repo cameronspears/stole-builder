@@ -26,12 +26,12 @@ export function TextileColorToolItem({ onClick, isActive }: TextileColorToolItem
 }
 
 export function TextileColorToolDrawerContent() {
-  const { config, updateConfig, setStep, advanceSuggestedTool } = useStoleStore();
+  const { config, updateConfig, completeStep, setActiveTool } = useStoleStore();
 
   const handleColorSelect = (colorId: TextileColorId) => {
     updateConfig({ textileColor: colorId });
-    setStep("changed");
-    advanceSuggestedTool();
+    completeStep("textileColor");
+    setActiveTool(null);
   };
 
   const selectedColor = TEXTILE_COLORS.find(c => c.id === config.textileColor);

@@ -26,12 +26,12 @@ export function LengthToolItem({ onClick, isActive }: LengthToolItemProps) {
 }
 
 export function LengthToolDrawerContent() {
-  const { config, updateConfig, setStep, advanceSuggestedTool } = useStoleStore();
+  const { config, updateConfig, completeStep, setActiveTool } = useStoleStore();
 
   const handleSelect = (length: StoleLength) => {
     updateConfig({ lengthInches: length });
-    setStep("changed");
-    advanceSuggestedTool();
+    completeStep("length");
+    setActiveTool(null);
   };
 
   return (

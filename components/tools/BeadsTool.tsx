@@ -27,12 +27,12 @@ export function BeadsToolItem({ onClick, isActive }: BeadsToolItemProps) {
 }
 
 export function BeadsToolDrawerContent() {
-  const { config, updateConfig, setStep, advanceSuggestedTool } = useStoleStore();
+  const { config, updateConfig, completeStep, setActiveTool } = useStoleStore();
 
   const handleToggle = () => {
     updateConfig({ beadsEnabled: !config.beadsEnabled });
-    setStep("changed");
-    advanceSuggestedTool();
+    completeStep("beads");
+    setActiveTool(null);
   };
 
   return (

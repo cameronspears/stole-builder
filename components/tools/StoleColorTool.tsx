@@ -26,12 +26,12 @@ export function StoleColorToolItem({ onClick, isActive }: StoleColorToolItemProp
 }
 
 export function StoleColorToolDrawerContent() {
-  const { config, updateConfig, setStep, advanceSuggestedTool } = useStoleStore();
+  const { config, updateConfig, completeStep, setActiveTool } = useStoleStore();
 
   const handleColorSelect = (colorId: StoleColorId) => {
     updateConfig({ stoleColor: colorId });
-    setStep("changed");
-    advanceSuggestedTool();
+    completeStep("stoleColor");
+    setActiveTool(null);
   };
 
   const selectedColor = STOLE_COLORS.find(c => c.id === config.stoleColor);
@@ -138,5 +138,4 @@ export function StoleColorTool() {
     </motion.div>
   );
 }
-
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useStoleStore } from "@/lib/store";
-import { ToolId, TOOL_TITLES } from "@/lib/types";
+import { ToolId, TOOL_ORDER, TOOL_TITLES } from "@/lib/types";
 import { ToolDrawer } from "./ToolDrawer";
 import { PegboardShelf } from "@/components/svg/PegboardShelf";
 import { PegboardHook } from "@/components/svg/PegboardHook";
@@ -47,7 +47,18 @@ function PegboardToolItemWrapper({ toolId, showHook, className }: PegboardToolIt
   
   const ToolComponent = TOOL_ITEMS[toolId];
   const isActive = activeTool === toolId;
-  const isSuggested = suggestedTool === toolId && !activeTool;
+  const isSuggested = suggestedTool === toolId;
+  const currentIndex = TOOL_ORDER.indexOf(suggestedTool);
+  const toolIndex = TOOL_ORDER.indexOf(toolId);
+  const isLocked = toolIndex > currentIndex;
+
+  const handleClick = () => {
+    if (isLocked) {
+      setActiveTool(suggestedTool);
+      return;
+    }
+    setActiveTool(toolId);
+  };
   
   return (
     <div className={`flex flex-col items-center ${className || ''}`}>
@@ -56,12 +67,21 @@ function PegboardToolItemWrapper({ toolId, showHook, className }: PegboardToolIt
           <PegboardHook />
         </div>
       )}
-      <div className={`transition-all duration-300 ${isSuggested ? 'animate-pulse' : ''}`}>
+      <div
+        className={`transition-all duration-300 ${isSuggested ? "tool-glow" : ""} ${
+          isLocked ? "opacity-50 grayscale" : ""
+        }`}
+        aria-disabled={isLocked}
+        title={isLocked ? "Finish the current step to unlock" : TOOL_TITLES[toolId]}
+      >
         <ToolComponent
-          onClick={() => setActiveTool(toolId)}
+          onClick={handleClick}
           isActive={isSuggested || isActive}
         />
       </div>
+      <span className="mt-1 text-[10px] font-medium text-pegboard-dark/80 text-center">
+        {TOOL_TITLES[toolId]}
+      </span>
     </div>
   );
 }
@@ -82,8 +102,8 @@ export function Pegboard() {
         {DrawerContent && <DrawerContent />}
       </ToolDrawer>
 
-      {/* Pegboard Tools Layout - Left side */}
-      <div className="absolute left-4 top-20 w-72 flex flex-col gap-4">
+      {/* Pegboard Tools Layout */}
+      <div className="flex flex-col gap-4 items-center">
         {/* Row 1: Ruler hanging from peg */}
         <div className="flex justify-center">
           <PegboardToolItemWrapper toolId="length" showHook />
@@ -91,7 +111,7 @@ export function Pegboard() {
         
         {/* Row 2: Shelf with paint tube, crayon box, thread spool */}
         <div className="relative">
-          <PegboardShelf width={280} />
+          <PegboardShelf width={260} className="w-[260px] h-auto" />
           <div className="absolute top-2 left-0 right-0 flex justify-around items-end px-8">
             <PegboardToolItemWrapper toolId="stoleColor" />
             <PegboardToolItemWrapper toolId="textileColor" />

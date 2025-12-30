@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Compass } from "@/components/svg/Compass";
 import { useStoleStore } from "@/lib/store";
+import { getTextileColorHex } from "@/lib/constants";
 import type { TextileOrientation } from "@/lib/types";
 
 interface OrientationToolItemProps {
@@ -26,12 +27,13 @@ export function OrientationToolItem({ onClick, isActive }: OrientationToolItemPr
 }
 
 export function OrientationToolDrawerContent() {
-  const { config, updateConfig, setStep, advanceSuggestedTool } = useStoleStore();
+  const { config, updateConfig, completeStep, setActiveTool } = useStoleStore();
+  const textileColorHex = getTextileColorHex(config.textileColor);
 
   const handleSelect = (orientation: TextileOrientation) => {
     updateConfig({ textileOrientation: orientation });
-    setStep("changed");
-    advanceSuggestedTool();
+    completeStep("orientation");
+    setActiveTool(null);
   };
 
   return (
@@ -56,7 +58,7 @@ export function OrientationToolDrawerContent() {
             {/* Stole outline */}
             <rect x="10" y="5" width="30" height="60" rx="3" fill="#E5E7EB" stroke="#9CA3AF" strokeWidth="1" />
             {/* Straight textile */}
-            <rect x="14" y="20" width="22" height="35" fill="#20B2AA" />
+            <rect x="14" y="20" width="22" height="35" fill={textileColorHex} />
           </svg>
           <div className="text-xs font-medium text-pegboard-dark mt-2">
             Straight
@@ -80,7 +82,7 @@ export function OrientationToolDrawerContent() {
             {/* Angled textile */}
             <path
               d="M14 30 L36 20 L36 55 L14 50 Z"
-              fill="#20B2AA"
+              fill={textileColorHex}
             />
           </svg>
           <div className="text-xs font-medium text-pegboard-dark mt-2">
@@ -95,6 +97,7 @@ export function OrientationToolDrawerContent() {
 // Legacy export for backwards compatibility
 export function OrientationTool() {
   const { config, updateConfig, setStep } = useStoleStore();
+  const textileColorHex = getTextileColorHex(config.textileColor);
 
   const handleSelect = (orientation: TextileOrientation) => {
     updateConfig({ textileOrientation: orientation });
@@ -126,7 +129,7 @@ export function OrientationTool() {
         >
           <svg viewBox="0 0 40 60" className="w-8 h-12">
             <rect x="5" y="0" width="30" height="60" fill="#E5E7EB" stroke="#9CA3AF" />
-            <rect x="8" y="20" width="24" height="30" fill={config.textileColor === "coral" ? "#FF6B6B" : "#20B2AA"} />
+            <rect x="8" y="20" width="24" height="30" fill={textileColorHex} />
           </svg>
           <div className="text-[10px] font-medium text-pegboard-dark mt-1">
             Straight
@@ -148,7 +151,7 @@ export function OrientationTool() {
             <rect x="5" y="0" width="30" height="60" fill="#E5E7EB" stroke="#9CA3AF" />
             <path
               d="M8 30 L32 20 L32 50 L8 45 Z"
-              fill={config.textileColor === "coral" ? "#FF6B6B" : "#20B2AA"}
+              fill={textileColorHex}
             />
           </svg>
           <div className="text-[10px] font-medium text-pegboard-dark mt-1">

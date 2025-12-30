@@ -5,6 +5,16 @@ import { DEFAULT_CONFIG, HOST_MESSAGES } from "./constants";
 import type { StoleConfig, HostStep, ToolId } from "./types";
 import { TOOL_ORDER } from "./types";
 
+const TOOL_STEP_MAP: Record<ToolId, HostStep> = {
+  length: "length",
+  stoleColor: "stoleColor",
+  textileColor: "textileColor",
+  accent: "accentMetal",
+  beads: "beads",
+  orientation: "orientation",
+  embroidery: "embroidery",
+};
+
 interface StoleStore {
   // Current config
   config: StoleConfig;
@@ -28,7 +38,7 @@ interface StoleStore {
   reset: () => void;
   setStep: (step: HostStep) => void;
   setActiveTool: (tool: ToolId | null) => void;
-  advanceSuggestedTool: () => void;
+  completeStep: (tool: ToolId) => void;
 
   // Computed helpers
   canUndo: () => boolean;
@@ -98,14 +108,37 @@ export const useStoleStore = create<StoleStore>((set, get) => ({
   },
 
   setActiveTool: (tool) => {
-    set({ activeTool: tool });
+    if (!tool) {
+      set({ activeTool: null });
+      return;
+    }
+    const step = TOOL_STEP_MAP[tool];
+    set({
+      activeTool: tool,
+      currentStep: step,
+      hostMessage: HOST_MESSAGES[step],
+    });
   },
 
-  advanceSuggestedTool: () => {
+  completeStep: (tool) => {
     const { suggestedTool } = get();
+    if (tool !== suggestedTool) return;
     const currentIndex = TOOL_ORDER.indexOf(suggestedTool);
-    const nextIndex = Math.min(currentIndex + 1, TOOL_ORDER.length - 1);
-    set({ suggestedTool: TOOL_ORDER[nextIndex] });
+    const nextIndex = currentIndex + 1;
+    if (nextIndex >= TOOL_ORDER.length) {
+      set({
+        currentStep: "complete",
+        hostMessage: HOST_MESSAGES.complete,
+      });
+      return;
+    }
+    const nextTool = TOOL_ORDER[nextIndex];
+    const nextStep = TOOL_STEP_MAP[nextTool];
+    set({
+      suggestedTool: nextTool,
+      currentStep: nextStep,
+      hostMessage: HOST_MESSAGES[nextStep],
+    });
   },
 
   canUndo: () => get().past.length > 0,

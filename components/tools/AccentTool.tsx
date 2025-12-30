@@ -27,18 +27,18 @@ export function AccentToolItem({ onClick, isActive }: AccentToolItemProps) {
 }
 
 export function AccentToolDrawerContent() {
-  const { config, updateConfig, setStep, advanceSuggestedTool } = useStoleStore();
+  const { config, updateConfig, setStep, completeStep, setActiveTool } = useStoleStore();
 
   const handleMetalChange = (metal: AccentMetal) => {
     const firstTrimOfMetal = TRIM_STYLES[metal][0].id;
     updateConfig({ accentMetal: metal, trimStyleId: firstTrimOfMetal });
-    setStep("changed");
+    setStep("trimStyle");
   };
 
   const handleTrimSelect = (trimId: TrimStyleId) => {
     updateConfig({ trimStyleId: trimId });
-    setStep("changed");
-    advanceSuggestedTool();
+    completeStep("accent");
+    setActiveTool(null);
   };
 
   const currentTrims = TRIM_STYLES[config.accentMetal];

@@ -57,6 +57,19 @@ export const FONT_OPTIONS: FontOption[] = [
   { id: "old-english", name: "Old English", style: "Blackletter, gothic" },
 ];
 
+export const FONT_PREVIEW_FAMILIES: Record<FontPreferenceId, string> = {
+  times: "\"Times New Roman\", Times, serif",
+  garamond: "\"Garamond\", \"Times New Roman\", serif",
+  georgia: "Georgia, \"Times New Roman\", serif",
+  "script-mt": "\"Brush Script MT\", \"Brush Script Std\", cursive",
+  edwardian: "\"Edwardian Script ITC\", \"Apple Chancery\", cursive",
+  "brush-script": "\"Brush Script MT\", \"Comic Sans MS\", cursive",
+  arial: "Arial, Helvetica, sans-serif",
+  "century-gothic": "\"Century Gothic\", Futura, \"Trebuchet MS\", sans-serif",
+  copperplate: "\"Copperplate\", \"Copperplate Gothic Light\", \"Times New Roman\", serif",
+  "old-english": "\"Old English Text MT\", \"Blackletter\", \"Times New Roman\", serif",
+};
+
 export const PRICING = {
   basePrice: { 62: 85, 72: 95 } as Record<62 | 72, number>,
   beadsAddon: 15,
@@ -73,26 +86,26 @@ export const PRICING = {
 
 export const HOST_MESSAGES: Record<HostStep, string> = {
   welcome:
-    "Welcome! Click on the glowing ruler above to pick your stole length.",
+    "Ready to build your stole? Start with the length tool.",
   length:
-    "Click the ruler to choose 62\" (standard) or 72\" (extra drape).",
+    "Step 1: Choose your stole length.",
   stoleColor:
-    "Great! Now click the paint tube on the shelf to pick your stole color.",
+    "Step 2: Pick the base stole color.",
   textileColor:
-    "Time for the textile! Click the crayon box to choose a color.",
+    "Step 3: Choose the sinh (textile) color.",
   accentMetal:
-    "Click the thread spool to pick gold or silver accents and trim style.",
-  trimStyle: "Pick a trim style that speaks to you!",
+    "Step 4: Select gold or silver accents.",
+  trimStyle: "Now pick a trim style you love.",
   beads:
-    "Click the bead jar to add some sparkle to your stole!",
+    "Step 5: Add beading if you'd like sparkle.",
   orientation:
-    "Use the compass to set your textile angle—straight or angled?",
+    "Step 6: Set the textile orientation—straight or angled.",
   embroidery:
-    "Almost done! Click the embroidery hoop to add your custom text.",
+    "Step 7: Add embroidery details (optional).",
   complete:
-    "Beautiful! Your design is ready. Check the receipt and save when ready!",
+    "All done! Review your receipt and save your design.",
   changed:
-    "Nice choice! Keep customizing or click another tool on the pegboard.",
+    "Nice choice! Continue when you're ready.",
 };
 
 export const DEFAULT_CONFIG: StoleConfig = {
@@ -139,4 +152,8 @@ export function getTrimStyleName(id: TrimStyleId): string {
 
 export function getFontName(id: string): string {
   return FONT_OPTIONS.find((f) => f.id === id)?.name ?? "Times New Roman";
+}
+
+export function getFontFamily(id: FontPreferenceId): string {
+  return FONT_PREVIEW_FAMILIES[id] ?? "\"Times New Roman\", Times, serif";
 }

@@ -80,10 +80,14 @@ body {
 
 .speech-bubble::after {
   content: '';
-  @apply absolute -bottom-3 left-8 w-0 h-0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-top: 12px solid white;
+  @apply absolute w-0 h-0;
+}
+
+.speech-bubble-left::after {
+  @apply left-[-12px] top-6;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 12px solid white;
 }
 
 /* Toggle switch styles */

@@ -14,7 +14,6 @@ export function PegboardShelf({ className, width = 300 }: PegboardShelfProps) {
     <svg
       viewBox={`0 0 ${width} ${height + bracketHeight}`}
       className={className}
-      style={{ width, height: height + bracketHeight }}
     >
       {/* Left bracket */}
       <g>
