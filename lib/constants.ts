@@ -7,6 +7,7 @@ import type {
   StoleColorId,
   TextileColorId,
   TrimStyleId,
+  FontPreferenceId,
 } from "./types";
 
 export const STOLE_COLORS: ColorOption[] = [
