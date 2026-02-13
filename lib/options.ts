@@ -1,0 +1,1 @@
+export { CORE_COLORS, FABRIC_PRESETS, PATCH_PRESETS, TEXT_COLORS, WIZARD_STEPS } from "@/lib/presets";

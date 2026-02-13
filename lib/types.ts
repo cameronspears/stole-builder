@@ -1,131 +1,80 @@
-export type StoleLength = 62 | 72;
+export type WizardStep = "palette" | "fabric" | "text" | "patches" | "review";
 
-export type StoleColorId =
-  | "white"
-  | "ivory"
-  | "black"
-  | "navy"
-  | "burgundy"
-  | "forest-green"
-  | "royal-blue"
-  | "red";
+export type Metal = "gold" | "silver";
 
-export type TextileColorId =
-  | "coral"
-  | "teal"
-  | "gold"
-  | "purple"
-  | "pink"
-  | "emerald"
-  | "sapphire"
-  | "crimson";
+export type FabricPresetId =
+  | "dokmai-gold"
+  | "dokmai-rose"
+  | "naga-midnight"
+  | "naga-ruby"
+  | "khem-indigo"
+  | "khem-emerald"
+  | "siho-red"
+  | "siho-ivory";
 
-export type AccentMetal = "gold" | "silver";
+export type PatchPresetId =
+  | "lotus"
+  | "naga"
+  | "temple"
+  | "crane"
+  | "laos-map"
+  | "orchid"
+  | "custom-note";
 
-export type TrimStyleId =
-  | "gold-classic"
-  | "gold-ornate"
-  | "gold-braided"
-  | "gold-minimal"
-  | "silver-classic"
-  | "silver-modern";
+export type CanvasItemType = "text" | "patch";
 
-export type TextileOrientation = "straight" | "angled";
+export interface CanvasItemBase {
+  id: string;
+  x: number;
+  y: number;
+  rotationDeg: number;
+}
 
-export type FontPreferenceId =
-  | "times"
-  | "garamond"
-  | "georgia"
-  | "script-mt"
-  | "edwardian"
-  | "brush-script"
-  | "arial"
-  | "century-gothic"
-  | "copperplate"
-  | "old-english";
+export interface TextItem extends CanvasItemBase {
+  type: "text";
+  content: string;
+  fontScale: number;
+  colorHex: string;
+}
+
+export interface PatchItem extends CanvasItemBase {
+  type: "patch";
+  presetId: PatchPresetId;
+  scale: number;
+}
+
+export type CanvasItem = TextItem | PatchItem;
 
 export interface StoleConfig {
-  lengthInches: StoleLength;
-  stoleColor: StoleColorId;
-  textileColor: TextileColorId;
-  accentMetal: AccentMetal;
-  trimStyleId: TrimStyleId;
-  beadsEnabled: boolean;
-  textileOrientation: TextileOrientation;
-  embroideryText: string;
-  embroideryFlags: string;
-  embroideryDesignNotes: string;
-  fontPreference: FontPreferenceId;
-  customFontRequest: string;
+  tipStyle: "pointed";
+  designName: string;
+  baseColorHex: string;
+  trimMetal: Metal;
+  fabricPresetLeft: FabricPresetId;
+  fabricPresetRight: FabricPresetId;
+  fringeEnabled: boolean;
+  canvasItems: CanvasItem[];
+  customPatchNotes: string;
 }
 
-export interface ColorOption {
-  id: string;
-  name: string;
-  hex: string;
+export interface OrderContact {
+  fullName: string;
+  email: string;
+  phone: string;
+  school: string;
+  gradYear: string;
+  eventDate: string;
 }
 
-export interface TrimStyle {
-  id: TrimStyleId;
-  name: string;
-  description: string;
+export interface OrderPayload {
+  version: "v1";
+  createdAtIso: string;
+  contact: OrderContact;
+  config: StoleConfig;
+  reviewAccepted: boolean;
+  mockupDisclaimerAccepted: boolean;
 }
 
-export interface FontOption {
-  id: FontPreferenceId;
-  name: string;
-  style: string;
-}
-
-export interface LineItem {
-  label: string;
-  price: number;
-}
-
-export interface PricingBreakdown {
-  lineItems: LineItem[];
-  subtotal: number;
-  total: number;
-}
-
-export type HostStep =
-  | "welcome"
-  | "length"
-  | "stoleColor"
-  | "textileColor"
-  | "accentMetal"
-  | "trimStyle"
-  | "beads"
-  | "orientation"
-  | "embroidery"
-  | "complete"
-  | "changed";
-
-export type ToolId =
-  | "length"
-  | "stoleColor"
-  | "textileColor"
-  | "accent"
-  | "beads"
-  | "orientation"
-  | "embroidery";
-
-export const TOOL_ORDER: ToolId[] = [
-  "length",
-  "stoleColor",
-  "textileColor",
-  "accent",
-  "beads",
-  "orientation",
-  "embroidery",
-];
-
-export const TOOL_TITLES: Record<ToolId, string> = {
-  length: "Stole Length",
-  stoleColor: "Stole Color",
-  textileColor: "Textile Color",
-  accent: "Accent & Trim",
-  beads: "Beading",
-  orientation: "Textile Style",
-  embroidery: "Embroidery",
+export type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
 };
